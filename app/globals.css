@@ -1,0 +1,972 @@
+
+@import "tailwindcss";
+
+/* =========================================
+   GLOBAL SETTINGS
+========================================= */
+
+:root {
+  --background: #08080b;
+  --foreground: #ededed;
+  --fii-red: #ef233c;
+  --fii-red-glow: rgba(239, 35, 60, 0.35);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================
+   SHARED ANIMATION KEYFRAMES
+========================================= */
+
+@keyframes fiiFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fiiFadeLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-55px, 15px, 0);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fiiFadeRight {
+  from {
+    opacity: 0;
+    transform: translate3d(65px, 25px, 0) scale(0.9);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes fiiGlowPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes fiiBackgroundDrift {
+  0%, 100% {
+    transform: scale(1.08) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.16) translate3d(-1.5%, 1%, 0);
+  }
+}
+
+@keyframes fiiCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(38px) scale(0.96);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes fiiPosterAppear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================
+   HOME PAGE — HERO BACKGROUND
+========================================= */
+
+.fii-hero {
+  isolation: isolate;
+}
+
+.fii-hero-bg {
+  animation: fiiBackgroundDrift 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.fii-glow-one,
+.fii-glow-two,
+.fii-featured-glow {
+  animation: fiiGlowPulse 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.fii-glow-two {
+  animation-delay: 2s;
+}
+
+/* HERO TEXT */
+
+.fii-hero-text {
+  animation: fiiFadeLeft 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.fii-welcome {
+  animation: fiiFadeUp 0.8s ease both;
+}
+
+.fii-main-title {
+  animation: fiiFadeUp 1s ease 0.15s both;
+}
+
+.fii-hero-description {
+  animation: fiiFadeUp 1s ease 0.3s both;
+}
+
+.fii-hero-info {
+  animation: fiiFadeUp 1s ease 0.45s both;
+}
+
+/* FEATURED POSTER */
+
+.fii-featured-card {
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+  transition:
+    box-shadow 0.6s ease,
+    border-color 0.6s ease;
+}
+
+.fii-featured-card:hover {
+  border-color: rgba(239, 35, 60, 0.7);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.65),
+    0 0 45px var(--fii-red-glow);
+}
+
+.fii-featured-image {
+  transition:
+    transform 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.7s ease;
+}
+
+.fii-featured-card:hover .fii-featured-image {
+  transform: scale(1.09);
+  filter: brightness(1.12) saturate(1.12);
+}
+
+.fii-featured-shine {
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.13) 48%,
+    transparent 70%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s ease;
+}
+
+.fii-featured-card:hover .fii-featured-shine {
+  transform: translateX(130%);
+}
+
+/* SECTION TITLES */
+
+.fii-section-heading {
+  animation: fiiFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* =========================================
+   HOME PAGE — TRENDING ANIME
+========================================= */
+
+.fii-anime-card {
+  position: relative;
+  min-width: 0;
+  opacity: 0;
+  animation: fiiCardEnter 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--card-index, 0) * 100ms);
+  transition:
+    transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.55s ease;
+  will-change: transform;
+}
+
+.fii-anime-card:hover {
+  z-index: 3;
+  transform: translateY(-9px) scale(1.025);
+}
+
+.fii-poster-frame {
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition:
+    border-color 0.45s ease,
+    box-shadow 0.55s ease;
+}
+
+.fii-anime-card:hover .fii-poster-frame {
+  border-color: rgba(239, 35, 60, 0.7);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(239, 35, 60, 0.18);
+}
+
+.fii-poster-image {
+  transition:
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.65s ease;
+  will-change: transform;
+}
+
+.fii-anime-card:hover .fii-poster-image {
+  transform: scale(1.12);
+  filter: brightness(1.12) saturate(1.12);
+}
+
+.fii-poster-shine {
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.16) 48%,
+    transparent 70%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s ease;
+}
+
+.fii-anime-card:hover .fii-poster-shine {
+  transform: translateX(130%);
+}
+
+/* =========================================
+   HOME PAGE — LATEST EPISODES
+========================================= */
+
+.fii-latest-card {
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: fiiCardEnter 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--card-index, 0) * 100ms);
+  transition:
+    transform 0.5s ease,
+    border-color 0.45s ease,
+    background-color 0.45s ease,
+    box-shadow 0.5s ease;
+}
+
+.fii-latest-card:hover {
+  transform: translateY(-6px) translateX(3px);
+  border-color: rgba(239, 35, 60, 0.5);
+  background-color: #1b151b;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.fii-latest-image {
+  transition:
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.5s ease;
+}
+
+.fii-latest-card:hover .fii-latest-image {
+  transform: scale(1.09) rotate(-2deg);
+  filter: brightness(1.12);
+}
+
+.fii-latest-arrow {
+  transition:
+    transform 0.4s ease,
+    color 0.4s ease;
+}
+
+.fii-latest-card:hover .fii-latest-arrow {
+  transform: translateX(7px);
+  color: var(--fii-red);
+}
+
+/* =========================================
+   HOME PAGE — NAVIGATION
+========================================= */
+
+.fii-nav {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.fii-nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.fii-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -7px;
+  height: 2px;
+  background: var(--fii-red);
+  transition: right 0.35s ease;
+}
+
+.fii-nav-link:hover::after {
+  right: 0;
+}
+
+.fii-logo {
+  transition: transform 0.3s ease;
+}
+
+.fii-logo:hover {
+  transform: scale(1.03);
+}
+
+/* HOME FOOTER */
+
+.fii-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.fii-footer a {
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.fii-footer a:hover {
+  color: var(--fii-red);
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   ANIME COLLECTION — HERO
+========================================= */
+
+.anime-fade-up {
+  animation: fiiFadeUp 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.anime-delay-1 {
+  animation-delay: 100ms;
+}
+
+.anime-delay-2 {
+  animation-delay: 200ms;
+}
+
+.anime-delay-3 {
+  animation-delay: 300ms;
+}
+
+.anime-hero-glow {
+  animation: fiiGlowPulse 7s ease-in-out infinite alternate;
+}
+
+.anime-hero-glow-delay {
+  animation-delay: 2s;
+}
+
+/* =========================================
+   ANIME COLLECTION — POSTERS
+========================================= */
+
+.anime-poster-card {
+  position: relative;
+  display: block;
+  min-width: 0;
+  opacity: 0;
+  animation: fiiPosterAppear 0.65s ease both;
+  transition:
+    transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.55s ease;
+  will-change: transform;
+}
+
+.anime-poster-card:hover {
+  z-index: 5;
+  transform: translateY(-9px) scale(1.025);
+}
+
+.anime-poster-frame {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition:
+    border-color 0.45s ease,
+    box-shadow 0.55s ease;
+}
+
+.anime-poster-card:hover .anime-poster-frame {
+  border-color: rgba(239, 35, 60, 0.7);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(239, 35, 60, 0.18);
+}
+
+.anime-poster-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scale(1);
+  transition:
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.65s ease;
+  will-change: transform;
+}
+
+.anime-poster-card:hover .anime-poster-frame img {
+  transform: scale(1.12);
+  filter: brightness(1.12) saturate(1.12);
+}
+
+.anime-poster-overlay {
+  opacity: 0.8;
+  transition: opacity 0.55s ease;
+}
+
+.anime-poster-card:hover .anime-poster-overlay {
+  opacity: 1;
+}
+
+.anime-poster-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.16) 48%,
+    transparent 70%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s ease;
+}
+
+.anime-poster-card:hover .anime-poster-frame::after {
+  transform: translateX(130%);
+}
+
+.anime-poster-arrow {
+  z-index: 3;
+  transition:
+    transform 0.4s ease,
+    background-color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.anime-poster-card:hover .anime-poster-arrow {
+  transform: translateY(-3px);
+  border-color: rgba(239, 35, 60, 0.9);
+  background-color: rgb(220, 38, 38);
+}
+
+/* =========================================
+   ANIME COLLECTION — CATEGORY TABS
+========================================= */
+
+.category-tab {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.55s ease,
+    color 0.35s ease;
+}
+
+.category-tab:hover {
+  transform: translateY(-5px) scale(1.04);
+  border-color: rgba(239, 35, 60, 0.8);
+  box-shadow:
+    0 10px 25px rgba(220, 38, 38, 0.16),
+    0 0 18px rgba(220, 38, 38, 0.12);
+}
+
+.category-tab:active {
+  transform: translateY(-1px) scale(0.97);
+}
+
+.category-tab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 80%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.8s ease;
+}
+
+.category-tab:hover::after {
+  transform: translateX(130%);
+}
+
+.category-tab:focus-visible {
+  outline: 2px solid var(--fii-red);
+  outline-offset: 4px;
+}
+
+/* =========================================
+   ANIME COLLECTION — NAVIGATION
+========================================= */
+
+.anime-nav-link {
+  position: relative;
+  display: inline-block;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.anime-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -7px;
+  height: 2px;
+  background: var(--fii-red);
+  transition: right 0.35s ease;
+}
+
+.anime-nav-link:hover::after {
+  right: 0;
+}
+
+.anime-nav-link:hover {
+  color: white;
+  transform: translateY(-2px);
+}
+
+.anime-nav-active::after {
+  right: 0;
+}
+
+/* =========================================
+   ANIME COLLECTION — FOOTER
+========================================= */
+
+.anime-footer-link {
+  position: relative;
+  display: inline-block;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.anime-footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -5px;
+  height: 2px;
+  background: var(--fii-red);
+  transition: right 0.35s ease;
+}
+
+.anime-footer-link:hover::after {
+  right: 0;
+}
+
+.anime-footer-link:hover {
+  color: var(--fii-red);
+  transform: translateY(-2px);
+}
+
+/* EMPTY SEARCH RESULT */
+
+.anime-empty {
+  animation: fiiFadeUp 0.5s ease both;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+  .fii-anime-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  .fii-anime-card:hover .fii-poster-image {
+    transform: scale(1.06);
+  }
+
+  .fii-latest-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .fii-featured-card:hover .fii-featured-image {
+    transform: scale(1.04);
+  }
+
+  .anime-poster-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  .anime-poster-card:hover .anime-poster-frame img {
+    transform: scale(1.06);
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .fii-anime-card,
+  .fii-latest-card,
+  .anime-poster-card {
+    opacity: 1;
+  }
+}
+
+/* HOME FOOTER LINKS */
+.fii-footer-link {
+  position: relative;
+  display: inline-block;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.fii-footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -5px;
+  height: 2px;
+  background: var(--fii-red);
+  transition: right 0.35s ease;
+}
+
+.fii-footer-link:hover::after {
+  right: 0;
+}
+
+.fii-footer-link:hover {
+  color: var(--fii-red);
+  transform: translateY(-2px);
+}
+
+
+/* =================================
+   ANIME DETAILS PAGE ANIMATIONS
+================================= */
+
+/* Page entrance */
+.fii-details-breadcrumb,
+.fii-details-panel,
+.fii-details-episodes {
+  animation: fiiDetailsEnter 0.7s ease both;
+}
+
+.fii-details-panel {
+  animation-delay: 0.1s;
+}
+
+.fii-details-episodes {
+  animation-delay: 0.2s;
+}
+
+@keyframes fiiDetailsEnter {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Poster hover */
+.fii-details-poster {
+  transition:
+    transform 0.5s ease,
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.fii-details-poster:hover {
+  transform: translateY(-9px) scale(1.025);
+  border-color: rgba(239, 68, 68, 0.55);
+  box-shadow: 0 25px 60px rgba(220, 38, 38, 0.16);
+}
+
+.fii-details-poster-image {
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.fii-details-poster:hover .fii-details-poster-image {
+  transform: scale(1.1);
+}
+
+/* Poster shine */
+.fii-details-poster-shine {
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.13) 45%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.8s ease;
+}
+
+.fii-details-poster:hover .fii-details-poster-shine {
+  transform: translateX(120%);
+}
+
+/* Stats hover */
+.fii-details-stat {
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.fii-details-stat:hover {
+  transform: translateY(-5px);
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.045);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Genre hover */
+.fii-details-genre {
+  display: inline-block;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.07);
+  padding: 9px 16px;
+  color: #f87171;
+  font-size: 11px;
+  font-weight: 700;
+  animation: fiiGenreEnter 0.5s ease both;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.fii-details-genre:hover {
+  transform: translateY(-4px);
+  border-color: rgba(239, 68, 68, 0.65);
+  background: rgba(239, 68, 68, 0.17);
+  box-shadow: 0 7px 20px rgba(220, 38, 38, 0.12);
+}
+
+@keyframes fiiGenreEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Back button */
+.fii-details-back {
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.fii-details-back:hover {
+  transform: translateY(-4px);
+  border-color: #dc2626;
+  background: #dc2626;
+  color: white;
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.2);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .fii-details-poster:hover {
+    transform: translateY(-5px) scale(1.015);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .fii-details-breadcrumb,
+  .fii-details-panel,
+  .fii-details-episodes,
+  .fii-details-genre {
+    animation: none;
+  }
+
+  .fii-details-poster,
+  .fii-details-poster-image,
+  .fii-details-poster-shine,
+  .fii-details-stat,
+  .fii-details-genre,
+  .fii-details-back {
+    transition: none;
+  }
+}
+
+
+/* DETAILS POSTER — HOMEPAGE STYLE */
+
+.fii-details-poster {
+  position: relative;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.fii-details-poster:hover {
+  transform: translateY(-9px) scale(1.025);
+  border-color: rgba(239, 68, 68, 0.7);
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(220, 38, 38, 0.2);
+}
+
+.fii-details-poster-image {
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.fii-details-poster:hover .fii-details-poster-image {
+  transform: scale(1.12);
+}
+
+/* POSTER SHINE */
+
+.fii-details-poster-shine {
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.18) 45%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.8s ease;
+}
+
+.fii-details-poster:hover .fii-details-poster-shine {
+  transform: translateX(120%);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 640px) {
+  .fii-details-poster:hover {
+    transform: translateY(-5px) scale(1.015);
+  }
+}
+
+/* REDUCE MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .fii-details-poster,
+  .fii-details-poster-image,
+  .fii-details-poster-shine,
+  .fii-details-poster-arrow,
+  .fii-details-back,
+  .fii-back-arrow {
+    transition: none;
+  }
+}
+
+/* ANIME COLOR FLOW ANIMATION */
+.fii-anime-hero {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    #ef4444,
+    #ff8a8a,
+    #ffffff,
+    #ff3030,
+    #ef4444
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fiiAnimeColorFlow 4s ease-in-out infinite;
+}
+
+@keyframes fiiAnimeColorFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
